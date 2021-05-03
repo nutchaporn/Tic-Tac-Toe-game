@@ -1,55 +1,79 @@
 var play = 'x';
-var gameT = [0,1,2,3,4,5,7,8];
-var value1 = '';
-var value2 = '';
+var number = 0;
+var num = [];
+var saveTable = [];
+var landscape = [];
+var vertical = [];
+var diagonal = [];
+var winGame = [];
 
-const winGame = [
-  [0,1,2],
-  [3,4,5],
-  [6,7,8],
-  [0,3,6],
-  [1,4,7],
-  [2,5,8],
-  [0,4,8],
-  [2,4,6]
-]
-
-function checkWin(){
-  let temA = [];
-  let winG = false;
-  for (let i = 0; i < gameT.length; i++){
-    if( play == gameT[i]){
-      temA.push(i)
+function valueText(a1,a2){
+  if(a1 == a2){
+    if(a1 >= 3 && a2 >= 3){
+      ArrayTable(a1,a2)
+      $('button').prop('disabled', true);
     }
+  } else {
+    $('#msg').html('!!!ERROR!!!');
   }
-  for(const [index, win] of winGame.entries()){
-    let myChack = true;
-    win.forEach( w => {
-      if(temA.indexOf(w) > -1){
-        myChack = myChack && true;
-      } else {
-        myChack = myChack && false;
-      }
+}
+
+function ArrayTable(value1,value2){
+  var inputs = '';
+  let td1 = [];
+  for(let i = 0; i < value1; i++){
+    inputs += `<tr id='tr${i}'>`
+    for(let j = 0; j < value2; j++){
+      inputs += `<td id='td${j}'><input type='image' src='image/p.jpg' id='${number}' onclick="chackInput(this)"></td>` 
+      td1.push(number);
+      saveTable.push(number);
+      number++;
+    };
+    landscape.push(td1)
+    td1 = [];
+    inputs += `</tr>`
+  };
+  chackVertical()
+  winGame.push(landscape);
+  winGame.push(vertical);
+  winGame.push(diagonal);
+  console.log(winGame);
+  $('#container').html(inputs)
+}
+
+function chackVertical(){
+  let ans = [];
+  let ans2 = [];
+  let ans3 = [];
+  let a = 0;
+  let b = landscape.length-1;
+  for(let k = 0; landscape.length > k; k++){
+    landscape.forEach( l => {
+      l.forEach( g  => {
+        if(l.indexOf(g) == k) {
+          ans.push(g)
+        } 
+        if(l.indexOf(g) == a) {
+          ans2.push(g)
+        }
+        if(l.indexOf(g) == b) {
+          ans3.push(g)
+        }  
+      })
+      a++
+      b--
     })
-    if(myChack) {
-      winG = true;
-      break; 
-    }
+    vertical.push(ans)
+    ans = [];
   }
+  diagonal.push(ans2)
+  diagonal.push(ans3)
+}
 
-  console.log(temA);
-  return winG;
-};
-
-function endGame(){
-  $('#msg').html( play + ' WIN!!!');
-  $('input').prop('disabled', true);
-};
-
-function turnT(btn){
-  gameT[btn.id] = play;
-  btn.src = 'image/' + play + '.jpg';
-  btn.disabled = true;
+function chackInput(k){
+  saveTable[k.id] = play;
+  k.src = 'image/' + play + '.jpg';
+  k.disabled = true;
   let status = checkWin();
   if (status) {
     endGame();
@@ -57,67 +81,34 @@ function turnT(btn){
   play = play == 'x' ? 'o' : 'x';
 }
 
-function ArrayTable(){
-  let inputs = '';
-  let m = 0;
-  let n = 0;
-  for(let i = 0; i < value1; i++){
-    inputs += `<tr id="tr${n}">`
-    for(let j = 0; j < value2; j++){
-      inputs += `<td id="td${m}"><input type="image" src="image/p.jpg" id="${m}"></td>` 
-      m++
-    };
-    n++
-    inputs += `</tr>`
-  };
+function checkWin(){
+  let temData = [];
+  let winner = false;
+  for (let i = 0; i < saveTable.length; i++){
+    if( play == saveTable[i]){
+      temData.push(i)
+    }
+  }
+  for(const [index, selectAns] of winGame.entries()){
+    for(const [index, win] of selectAns.entries()){
+      let myChack = true;
+      win.forEach( w => {
+        if(temData.indexOf(w) > -1){
+          myChack = myChack && true;
+        } else {
+          myChack = myChack && false;
+        }
+      })
+      if(myChack) {
+        winner = true;
+        break; 
+      }
+    }
+  }
+  return winner;
+};
 
-  console.log(inputs)
-  $('#container').html(inputs)
-  
-}
-
-$('#text1').change(function () { 
-  value1 = parseInt($(this).val());
-  $('#text2').change(function (){
-    value2 = parseInt($(this).val());
-    ArrayTable()
-  });
-});
-
-$('#0').click(function (){
-  e.preventDefault();
-  console.log('x')
-  turnT(this)
-});
-$('#1').click(function (e) { 
-  e.preventDefault();
-  turnT(this)
-});
-$('#2').click(function (e) { 
-  e.preventDefault();
-  turnT(this)
-});
-$('#3').click(function (e) { 
-  e.preventDefault();
-  turnT(this)
-});
-$('#4').click(function (e) { 
-  e.preventDefault();
-  turnT(this)
-});
-$('#5').click(function (e) { 
-  e.preventDefault();
-  turnT(this)
-});
-$('#6').click(function (e) { 
-  e.preventDefault();
-  turnT(this)
-});
-$('#7').click(function (e) { 
-  e.preventDefault();
-  turnT(this)
-});
-$('#8').click(function (e) { 
-  e.preventDefault();
-  turnT(this)
-});
+function endGame(){
+  $('#msg').html( play + ' WIN!!!');
+  $('input').prop('disabled', true);
+};

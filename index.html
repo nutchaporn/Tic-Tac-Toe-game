@@ -8,18 +8,20 @@
 </head>
 <body>
   <div>
-    <input type="text" name="text1" id="text1">
-    <input type="text" name="text2" id="text2">
+    <input type="text" name="text1" id="text1" value="3">
+    <input type="text" name="text2" id="text2" value="3">
+    <button onclick="valueText(text1.value,text2.value)">save</button>
     <table id="container"></table>  
   </div>
-  <div id="msg">XO</div>
-  
+  <div id="msg"></div>
+
+
   <script 
   src="https://code.jquery.com/jquery-3.6.0.min.js" 
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
   crossorigin="anonymous"></script>
 
-  <script src="./js/index.js" type="module"></script>
+  <script type="text/javascript" src="./js/index.js"></script>
 
 </body>
 </html>
