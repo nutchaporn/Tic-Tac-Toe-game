@@ -4,24 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./css/index.css" rel="stylesheet">
     <title>XO Game</title>
 </head>
 <body>
   <div>
     <input type="text" name="text1" id="text1" value="3">
     <input type="text" name="text2" id="text2" value="3">
-    <button onclick="valueText(text1.value,text2.value)">save</button>
-    <table id="container"></table>  
+    <button id="buttonID" onclick="valueText(text1.value,text2.value)">save</button>
+    <button id="bID" onclick="showData()">History</button>
+    <div id="msg"></div>
+    <table id="container"></table> 
   </div>
-  <div id="msg"></div>
+
+  <hr>
+
+  <div>
+    <div id="msg2"></div> 
+    <div id="containerData"></div>
+    
+  </div>
+  
 
 
   <script 
   src="https://code.jquery.com/jquery-3.6.0.min.js" 
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
   crossorigin="anonymous"></script>
-
   <script type="text/javascript" src="./js/index.js"></script>
-
 </body>
 </html>

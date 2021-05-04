@@ -6,12 +6,16 @@ var landscape = [];
 var vertical = [];
 var diagonal = [];
 var winGame = [];
+var dataTable = localStorage.getItem("save");
 
 function valueText(a1,a2){
+  num = a1
   if(a1 == a2){
     if(a1 >= 3 && a2 >= 3){
       ArrayTable(a1,a2)
-      $('button').prop('disabled', true);
+      $('#buttonID').prop('disabled', true);
+    } else {
+      $('#msg').html('!!!ERROR!!!');
     }
   } else {
     $('#msg').html('!!!ERROR!!!');
@@ -37,7 +41,6 @@ function ArrayTable(value1,value2){
   winGame.push(landscape);
   winGame.push(vertical);
   winGame.push(diagonal);
-  console.log(winGame);
   $('#container').html(inputs)
 }
 
@@ -109,6 +112,50 @@ function checkWin(){
 };
 
 function endGame(){
+  let valueTable = [];
+  let DT = [];
+  let saveString = [];
   $('#msg').html( play + ' WIN!!!');
+  if (dataTable !== null){
+    DT = JSON.parse(dataTable);
+  }
+  valueTable = {
+    "number": num,
+    "dataWin": saveTable,
+    "win": play
+  }
+  DT.push(valueTable)
+  saveString = JSON.stringify(DT)
+  localStorage.setItem("save", saveString);
+  dataTable = localStorage.getItem("save");
   $('input').prop('disabled', true);
 };
+
+function showData(){
+  let sum = [];
+  let indexXO = '';
+  let htmlInput = '';
+  sum = JSON.parse(dataTable);
+  sum.forEach( s => {
+    let n = 0;
+    htmlInput += `<table id="T${sum.indexOf(s)}">`
+    for(let i = 0; i < s.number; i++){
+      htmlInput += `<tr id='tr${i}'>`
+      for(let j = 0; j < s.number; j++){
+        if(s.dataWin[n] == 'x'){
+          indexXO = 'x'
+        } else if(s.dataWin[n] == 'o'){
+          indexXO = 'o'
+        } else {
+          indexXO = 'p'
+        }
+        htmlInput += `<td id='td${j}'><input type='image' src='image/${indexXO}.jpg' id='${n}'></td>` 
+        n++
+      };
+      htmlInput += `</tr>`
+    };
+    htmlInput += `</table> <br><h1>${s.win} WIN!!!</h1>`
+  })
+
+  $('#containerData').html(htmlInput);
+}
